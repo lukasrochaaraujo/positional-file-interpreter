@@ -7,6 +7,8 @@ namespace PositionalFileInterpreter.Core
 {
     public static class LineConverter
     {
+        private const char Empty = ' ';
+        private const char Zero = '0';
         public static string DecimalSeparator { get; set; } = ",";
         public static string HundredSeparator { get; set; } = ".";
 
@@ -40,11 +42,15 @@ namespace PositionalFileInterpreter.Core
                                     if (string.IsNullOrWhiteSpace(lineValue))
                                         continue;
 
-                                    if (objectTPropertyInfo.PropertyType == typeof(DateTime) && (lineValue.Equals("0000/00/00") || lineValue.Equals("000000") || lineValue.Equals("00000000")))
+                                    if (objectTPropertyInfo.PropertyType == typeof(DateTime) && (lineValue.Equals("0000-00-00") || lineValue.Equals("000000") || lineValue.Equals("00000000")))
                                         continue;
 
                                     if (!objectTRowPropertyAttribute.Decimals.Equals(0))
-                                        lineValue = string.Concat(lineValue, DecimalSeparator, line.Substring((objectTRowPropertyAttribute.Start + objectTRowPropertyAttribute.Length) - 1, objectTRowPropertyAttribute.Decimals));
+                                    {
+                                        string numberWithoutDecimals = line.Substring(objectTRowPropertyAttribute.Start - 1, objectTRowPropertyAttribute.Length - objectTRowPropertyAttribute.Decimals);
+                                        string numberOnlyDecimals = line.Substring((objectTRowPropertyAttribute.Start + objectTRowPropertyAttribute.Length - objectTRowPropertyAttribute.Decimals) - 1, objectTRowPropertyAttribute.Decimals);
+                                        lineValue = string.Concat(numberWithoutDecimals, DecimalSeparator, numberOnlyDecimals);
+                                    }
 
                                     if (objectTPropertyInfo.PropertyType == typeof(DateTime) && !string.IsNullOrWhiteSpace(objectTRowPropertyAttribute.Format))
                                     {
@@ -73,9 +79,7 @@ namespace PositionalFileInterpreter.Core
             StringBuilder lineBuffer = null;
             LineAttribute objectTLineAttribute;
             RowAttribute objectTRowPropertyAttribute;
-            char empty = ' ';
-            char zero = '0';
-
+            
             foreach (Attribute attributeClass in objectT.GetType().GetCustomAttributes(true))
             {
                 objectTLineAttribute = attributeClass as LineAttribute;
@@ -94,7 +98,7 @@ namespace PositionalFileInterpreter.Core
 
                             if (null != attributeProperty)
                             {
-                                string lineValue = string.Empty.PadLeft(objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals, empty);
+                                string lineValue = string.Empty.PadLeft(objectTRowPropertyAttribute.Length, Empty);
 
                                 if (propertyInfo.GetValue(objectT) != null)
                                 {
@@ -105,40 +109,45 @@ namespace PositionalFileInterpreter.Core
                                         if (lineFormattedValue != DateTime.MinValue)
                                         {
                                             string mask = string.IsNullOrWhiteSpace(objectTRowPropertyAttribute.Format) ? "yyyyMMdd" : objectTRowPropertyAttribute.Format;
-                                            lineValue = string.Format("{0:" + mask + "}", lineFormattedValue).PadLeft(objectTRowPropertyAttribute.Length, zero).PadLeft(objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals, zero);
+                                            lineValue = string.Format("{0:" + mask + "}", lineFormattedValue).PadLeft(objectTRowPropertyAttribute.Length, Zero).PadLeft(objectTRowPropertyAttribute.Length, Zero);
                                         }
                                         else
                                         {
-                                            lineValue = zero.ToString().PadLeft(objectTRowPropertyAttribute.Length, zero).PadLeft(objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals, zero);
+                                            lineValue = Zero.ToString().PadLeft(objectTRowPropertyAttribute.Length, Zero).PadLeft(objectTRowPropertyAttribute.Length, Zero);
                                         }
 
                                     }
                                     else if (propertyInfo.PropertyType == typeof(int) || propertyInfo.PropertyType == typeof(long))
                                     {
-                                        lineValue = string.Format("{0:0}", propertyInfo.GetValue(objectT)).PadLeft(objectTRowPropertyAttribute.Length, zero);
+                                        lineValue = string.Format("{0:0}", propertyInfo.GetValue(objectT)).PadLeft(objectTRowPropertyAttribute.Length, Zero);
                                     }
                                     else if (propertyInfo.PropertyType == typeof(decimal))
                                     {
-                                        string mascara = string.Concat("{0:F", objectTRowPropertyAttribute.Decimals, "}");
+                                        string mask = string.Concat("{0:F", objectTRowPropertyAttribute.Decimals, "}");
 
                                         if (string.IsNullOrEmpty(objectTRowPropertyAttribute.Culture))
-                                            lineValue = string.Format(mascara, propertyInfo.GetValue(objectT)).Replace(HundredSeparator, string.Empty).Replace(DecimalSeparator, string.Empty);
+                                            lineValue = string.Format(mask, propertyInfo.GetValue(objectT)).Replace(HundredSeparator, string.Empty).Replace(DecimalSeparator, string.Empty);
                                         else
                                             lineValue = Convert.ToDecimal(propertyInfo.GetValue(objectT)).ToString("F", CultureInfo.CreateSpecificCulture(objectTRowPropertyAttribute.Culture));
 
-                                        lineValue = lineValue.PadLeft(objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals, zero);
+                                        lineValue = lineValue.PadLeft(objectTRowPropertyAttribute.Length, Zero);
 
                                     }
                                     else
                                     {
-                                        lineValue = ((string)propertyInfo.GetValue(objectT)).PadRight(objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals, empty);
+                                        lineValue = ((string)propertyInfo.GetValue(objectT)).PadRight(objectTRowPropertyAttribute.Length, Empty);
                                     }
 
                                 }
 
-                                lineBuffer.Remove(objectTRowPropertyAttribute.Start - 1, objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals);
-                                lineBuffer.Insert(objectTRowPropertyAttribute.Start - 1, lineValue.Substring(0, objectTRowPropertyAttribute.Length + objectTRowPropertyAttribute.Decimals));
+                                int lineStartIndex = objectTRowPropertyAttribute.Start - 1;
+                                int lineLength = objectTRowPropertyAttribute.Length;
 
+                                if (objectTRowPropertyAttribute.Decimals > 0)
+                                    lineLength++;
+
+                                lineBuffer.Remove(lineStartIndex, lineLength);
+                                lineBuffer.Insert(lineStartIndex, lineValue.Substring(0, objectTRowPropertyAttribute.Length));
                             }
                         }
                     }
