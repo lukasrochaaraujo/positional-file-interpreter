@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FE8E2BA5-951
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PositionalFileInterpreter.Core", "src\PositionalFileInterpreter.Core\PositionalFileInterpreter.Core.csproj", "{49615F33-0E98-43CB-B8FE-08BBDBFFE391}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6891A916-2E56-42E7-A11C-CA2E10407362}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionalFileInterpreter.Tests", "tests\PositionalFileInterpreter.Tests\PositionalFileInterpreter.Tests.csproj", "{53DE8914-1A45-4D79-960F-FF8A9D74F67A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{49615F33-0E98-43CB-B8FE-08BBDBFFE391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49615F33-0E98-43CB-B8FE-08BBDBFFE391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49615F33-0E98-43CB-B8FE-08BBDBFFE391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53DE8914-1A45-4D79-960F-FF8A9D74F67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53DE8914-1A45-4D79-960F-FF8A9D74F67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53DE8914-1A45-4D79-960F-FF8A9D74F67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53DE8914-1A45-4D79-960F-FF8A9D74F67A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49615F33-0E98-43CB-B8FE-08BBDBFFE391} = {FE8E2BA5-9514-44CF-B61B-5F5F1B01353A}
+		{53DE8914-1A45-4D79-960F-FF8A9D74F67A} = {6891A916-2E56-42E7-A11C-CA2E10407362}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40043D89-0EF7-41D6-ABA6-FEDC51B78B43}

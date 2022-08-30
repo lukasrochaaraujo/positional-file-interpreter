@@ -12,7 +12,9 @@ namespace PositionalFileInterpreter.Core
 
         public static decimal ToDecimal(this string value, string culture)
         {
-            if (value.Contains("\0"))
+            string nullChar = "\0";
+
+            if (value.Contains(nullChar))
                 value = "0";
 
             return decimal.Parse(value, NumberStyles.Any, new CultureInfo(culture));
