@@ -49,7 +49,7 @@ namespace PositionalFileInterpreter.Tests
         [InlineData("\0\0\0", "pt-br", 0)]
         [InlineData("\0", "pt-br", 0)]
         [InlineData("\0\0\0\0", "pt-br", 0)]
-        public void ConvertToDecimalWitNullChar(string value, string culture, decimal expectedValue)
+        public void ConvertToDecimalWithNullChar(string value, string culture, decimal expectedValue)
         {
             //arrange & act
             decimal convertedValue = value.ToDecimal(culture);
