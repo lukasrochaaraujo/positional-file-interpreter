@@ -1,4 +1,4 @@
-﻿namespace PositionalFileInterpreter.Core
+﻿namespace PositionalInterpreter.Core
 {
     public enum LineType
     {

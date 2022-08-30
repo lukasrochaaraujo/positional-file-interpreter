@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PositionalFileInterpreter.Core
+namespace PositionalInterpreter.Core
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class LineAttribute : Attribute

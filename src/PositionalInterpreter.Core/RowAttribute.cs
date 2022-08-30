@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PositionalFileInterpreter.Core
+namespace PositionalInterpreter.Core
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public class RowAttribute : Attribute

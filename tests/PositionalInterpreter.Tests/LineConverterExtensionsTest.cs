@@ -1,8 +1,8 @@
-﻿using PositionalFileInterpreter.Core;
+﻿using PositionalInterpreter.Core;
 using System;
 using Xunit;
 
-namespace PositionalFileInterpreter.Tests
+namespace PositionalInterpreter.Tests
 {
     public class LineConverterExtensionsTest
     {

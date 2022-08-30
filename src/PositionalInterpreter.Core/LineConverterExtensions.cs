@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PositionalFileInterpreter.Core
+namespace PositionalInterpreter.Core
 {
     public static class LineConverterExtensions
     {

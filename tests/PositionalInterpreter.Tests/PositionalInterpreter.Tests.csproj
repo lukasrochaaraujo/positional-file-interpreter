@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PositionalFileInterpreter.Core\PositionalFileInterpreter.Core.csproj" />
+    <ProjectReference Include="..\..\src\PositionalInterpreter.Core\PositionalInterpreter.Core.csproj" />
   </ItemGroup>
 
 </Project>
