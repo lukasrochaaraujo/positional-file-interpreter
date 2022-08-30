@@ -34,7 +34,7 @@ namespace PositionalFileInterpreter.Tests
 
         [Theory]
         [InlineData("2.000,00", "pt-br", 2000)]
-        [InlineData("1.999,99", "pt-br", 1999.99)]
+        [InlineData("1,999.99", "en-us", 1999.99)]
         [InlineData("0,99", "pt-br", 0.99)]
         public void ConvertToDecimalWithoutNullChar(string value, string culture, decimal expectedValue)
         {
